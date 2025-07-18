@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Curricular QYF</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5ff;
+      padding: 2rem;
+    }
+    .semestre {
+      margin-bottom: 2rem;
+    }
+    .titulo-semestre {
+      background-color: #c9a3ff;
+      color: white;
+      padding: 10px;
+      border-radius: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .ramos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .ramo {
+      background-color: #aee5f7;
+      color: #000;
+      padding: 1rem;
+      border-radius: 1rem;
+      width: 200px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+    .ramo:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular QYF</h1>
+  <div id="contenedor-malla"></div>
+
+  <script>
+    const malla = URL_TO_JSON; // aquí irá el contenido JSON o una importación fetch
+
+    const contenedor = document.getElementById("contenedor-malla");
+
+    const agrupado = {};
+    malla.forEach(ramo => {
+      if (!agrupado[ramo.semestre]) agrupado[ramo.semestre] = [];
+      agrupado[ramo.semestre].push(ramo);
+    });
+
+    Object.keys(agrupado).sort((a, b) => a - b).forEach(semestre => {
+      const divSem = document.createElement("div");
+      divSem.className = "semestre";
+
+      const titulo = document.createElement("div");
+      titulo.className = "titulo-semestre";
+      titulo.textContent = `Semestre ${semestre}`;
+      divSem.appendChild(titulo);
+
+      const contRamos = document.createElement("div");
+      contRamos.className = "ramos";
+
+      agrupado[semestre].forEach(ramo => {
+        const r = document.createElement("div");
+        r.className = "ramo";
+        r.textContent = ramo.nombre;
+        contRamos.appendChild(r);
+      });
+
+      divSem.appendChild(contRamos);
+      contenedor.appendChild(divSem);
+    });
+  </script>
+</body>
+</html>
